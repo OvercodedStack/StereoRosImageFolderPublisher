@@ -1,0 +1,17 @@
+<launch>
+    <node pkg="stereo_image_folder_publisher" type="stereo_image_folder_publisher.py" name="stereo_image_folder_publisher" output="screen">
+
+        <param name="topic_name_left" value="/ispies/image_raw_left" />
+        <param name="topic_name_right" value="/ispies/image_raw_right" />
+
+        <param name="publish_rate" value="5"/>
+        <param name="sort_files" value="True" />
+        <param name="frame_id_left" value="/ispies/camera_left" />
+        <param name="frame_id_right" value="/ispies/camera_right" />
+        <param name="sleep" value="0" />
+        <param name="loop" value="-1" />
+        <param name="image_folder_right" value="/media/avanna/B1E2-10A5/Processed_Folder_Width_20_Height_80_test_orb/1/right_camera_RGB" />
+        <param name="image_folder_left" value="/media/avanna/B1E2-10A5/Processed_Folder_Width_20_Height_80_test_orb/1/left_camera_RGB" />
+
+    </node>
+</launch>

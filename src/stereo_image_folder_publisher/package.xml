@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>image_folder_publisher</name>
+    <name>stereo_image_folder_publisher</name>
     <version>1.0.0</version>
     <description>An image publisher for images contained in a folder.</description>
 
     <license>BSD</license>
 
-    <author  email="">Esteban Segarra</author >
-    <maintainer email="">Esteban Segarra</maintainer>
+    <author  email="null@null.edu">Esteban Segarra</author >
+    <maintainer email="null@null.edu">Esteban Segarra</maintainer>
 
     <buildtool_depend>catkin</buildtool_depend>
     <exec_depend>cv_bridge</exec_depend>

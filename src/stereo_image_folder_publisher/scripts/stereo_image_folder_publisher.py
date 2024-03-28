@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 from __future__ import print_function
 
 import roslib
@@ -9,6 +9,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 
+import re
 import rospy
 import cv2
 
@@ -37,6 +38,8 @@ class image_folder_publisher:
         self._sort_files = rospy.get_param('~sort_files', True)
         rospy.loginfo("[%s] (sort_files) Sort Files: %r", self.__app_name, self._sort_files)
 
+
+
         # ROS Camera topics
         self._frame_id_left = rospy.get_param('~frame_id_left', 'camera_left')
         rospy.loginfo("[%s] (frame_id) Frame ID set to  %s", self.__app_name, self._frame_id_left)
@@ -47,6 +50,8 @@ class image_folder_publisher:
         self._loop = rospy.get_param('~loop', 1)
         rospy.loginfo("[%s] (loop) Loop  %d time(s) (set it -1 for infinite)", self.__app_name, self._loop)
 
+
+
         # ROSrun folder parameters
         self._image_folder_left = rospy.get_param('~image_folder_left', '')
         self._image_folder_right = rospy.get_param('~image_folder_right', '')
@@ -54,6 +59,8 @@ class image_folder_publisher:
         self._sleep = rospy.get_param('~sleep', 0.0)
         rospy.sleep(self._sleep)
         rospy.loginfo("[%s] (sleep) Sleep %f seconds after each image", self.__app_name, self._sleep)
+
+
         
         #Section for loading the photos... Could use a dynamically loaded approach for times when pictures are incidentially loaded.         
         if self._image_folder_left == '' or not os.path.exists(self._image_folder_left) or not os.path.isdir(self._image_folder_left):
@@ -66,32 +73,33 @@ class image_folder_publisher:
             sys.exit(0)
 
         rospy.loginfo("[%s] Reading images from %s", self.__app_name, self._image_folder_right)
-        
+     
+
+
 
     def run(self):
         ros_rate = rospy.Rate(self._rate)
 
 
-        files_in_dir_left = [f for f in listdir(self._image_folder_left) if isfile(join(self._image_folder_left, f))]
+        files_in_dir_left  = [f for f in listdir(self._image_folder_left) if isfile(join(self._image_folder_left, f))]
         files_in_dir_right = [f for f in listdir(self._image_folder_right) if isfile(join(self._image_folder_right, f))]
 
 
         if self._sort_files:
-            files_in_dir_left.sort()
+            files_in_dir_left.sort(key=lambda var:[int(x) if x.isdigit() else x for x in re.findall(r'[^0-9]|[0-9]+', var)])
 
         if self._sort_files:
-            files_in_dir_right.sort()
+            files_in_dir_right.sort(key=lambda var:[int(x) if x.isdigit() else x for x in re.findall(r'[^0-9]|[0-9]+', var)])
 
 
         if (len(files_in_dir_left) != len(files_in_dir_right)):
             rospy.loginfo("[%s] Mismatched stereo image count: Left camera count:%d  right camera count: %d", self.__app_name, len(files_in_dir_left),len(files_in_dir_right))
             return
+        else:
+            rospy.loginfo("[%s] Image count: Left camera count:%d  right camera count: %d", self.__app_name, len(files_in_dir_left),len(files_in_dir_right))
 
         try:
             while self._loop != 0:
-
-
-                # for f in files_in_dir:
                 for i in range(0,len(files_in_dir_left)):
                     if not rospy.is_shutdown():
                         left_image_stereo_filename   = join(self._image_folder_left, files_in_dir_left[i])
@@ -104,15 +112,16 @@ class image_folder_publisher:
                             
                             if (cv_image_left is not None and cv_image_right is not None):
                                 ros_msg_left = self._cv_bridge.cv2_to_imgmsg(cv_image_left, "bgr8")
-                                ros_msg_left.header.frame_id = self._frame_id
+                                ros_msg_left.header.frame_id = self._frame_id_left
+
                                 ros_msg_left.header.stamp = rospy.Time.now()
                                 self._image_publisher_left.publish(ros_msg_left)
                                 rospy.loginfo("[%s] Published %s", self.__app_name, left_image_stereo_filename)
 
                                 ros_msg_right = self._cv_bridge.cv2_to_imgmsg(cv_image_right, "bgr8")
-                                ros_msg_right.header.frame_id = self._frame_id
+                                ros_msg_right.header.frame_id = self._frame_id_right
                                 ros_msg_right.header.stamp = rospy.Time.now()
-                                self._image_publisher_left.publish(ros_msg_left)
+                                self._image_publisher_right.publish(ros_msg_right)
                                 rospy.loginfo("[%s] Published %s", self.__app_name, right_image_stereo_filename)
                             else:
                                 rospy.loginfo("[%s] Invalid image file %s", self.__app_name, left_image_stereo_filename)
@@ -120,11 +129,7 @@ class image_folder_publisher:
                     else:
                         return
 
-
-
                 self._loop = self._loop - 1
-
-
 
         except CvBridgeError as e:
             rospy.logerr(e)
