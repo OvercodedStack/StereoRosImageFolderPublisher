@@ -35,7 +35,7 @@ or
 
 ### Example
 
-`rosrun image_folder_publisher image_folder_publisher.py _image_folder:=/PATH/Images _topic_name:=/image_topic`
+`rosrun image_folder_publisher image_folder_publisher.py image_folder_left:=/PATH/Images_left image_folder_right:=/PATH/Images_right _topic_name_left:=/image_topic_left _topic_name_right:=/image_topic_right`
 or modify these in `publisher.launch`
 
 ## Notes
