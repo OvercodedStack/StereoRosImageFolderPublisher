@@ -6,8 +6,8 @@
 
     <license>BSD</license>
 
-    <author  email="abrahammonrroy@yahoo.com">Abraham Monrroy</author >
-    <maintainer email="abrahammonrroy@yahoo.com">Abraham Monrroy</maintainer>
+    <author  email="">Esteban Segarra</author >
+    <maintainer email="">Esteban Segarra</maintainer>
 
     <buildtool_depend>catkin</buildtool_depend>
     <exec_depend>cv_bridge</exec_depend>
