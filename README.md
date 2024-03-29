@@ -35,6 +35,13 @@ or
 |`image_folder_right`| String | Path to the folder containing the images to be published|               | 
 |`sleep`       | Int    | Sleep few seconds to make sure the images process nodes are started|`0` | 
 
+
+Images are outputted to *<topic_name_left>/image_rect*.
+
+Camera info are outputted to *<topic_name_left>/camera_info*.
+
+
+
 ### Example
 
 `rosrun image_folder_publisher image_folder_publisher.py image_folder_left:=/PATH/Images_left image_folder_right:=/PATH/Images_right _topic_name_left:=/image_topic_left _topic_name_right:=/image_topic_right`
