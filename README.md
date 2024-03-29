@@ -23,12 +23,14 @@ or
 
 |Param name    | Type   | Description                                             | Default Value |
 |------------- |--------|-------------------------------------------------------  |---------------|
-|`topic_name_left`  | String | Name of the topic to publish the left image stream           | `image_raw_left`   |
-|`topic_name_right`  | String | Name of the topic to publish the right image stream           | `image_raw_right`   |
+|`topic_name_left`  | String | Name of the topic to publish the left image stream.           | `image_raw_left`   |
+|`topic_name_right`  | String | Name of the topic to publish the right image stream.           | `image_raw_right`   |
 |`publish_rate`| Integer| Frame rate in Hz to publish the image.                  | `10`          |
-|`sort_files`  | Boolean| Defines if the files will be sorted before publishing   | `True`        |
-|`frame_id_left`    | String | Sets the frame_id_left contained in the Image message header | `camera_left`      |
-|`frame_id_right`    | String | Sets the frame_id_left contained in the Image message header | `camera_right`      |
+|`sort_files`  | Boolean| Defines if the files will be sorted before publishing.   | `True`        |
+|`simulate_camera`  | Boolean| Simulates the camera intrinsic values and camera info as a real stereo camera.   | `True`        |
+|`stereo_baseline`  | Boolean| Sets the stereo baseline of the camera.   | `True`        |
+|`simulated_camera_fov`  | float| Sets the FOV of the inputted images. Used to calculate camera intrisics.   | `90.0`        |
+|`frame_id`    | String | Sets the frame_id_left contained in the Image message header | `/ispies/stereo_camera`      |
 |`image_folder_left`| String | Path to the folder containing the images to be published|               | 
 |`image_folder_right`| String | Path to the folder containing the images to be published|               | 
 |`sleep`       | Int    | Sleep few seconds to make sure the images process nodes are started|`0` | 
